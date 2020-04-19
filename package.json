@@ -1,0 +1,19 @@
+{
+  "name": "travel-app",
+  "version": "1.0.0",
+  "description": "FEND Capstone Project",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kalquiza/travel-app.git"
+  },
+  "author": "Kristoffer Alquiza",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kalquiza/travel-app/issues"
+  },
+  "homepage": "https://github.com/kalquiza/travel-app#readme"
+}
