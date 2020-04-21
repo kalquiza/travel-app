@@ -20,13 +20,14 @@ const postData = async (url = '', data = {}) => {
     }
   };
   
-  /* Function to GET data from web API OpenWeatherMap */
-  const baseURL = 'http://api.openweathermap.org/data/2.5/weather?zip=';
-  const apiKey = '&appid=5797794e603dad693680b2137143003c';
-  const units = '&units=imperial';
+  /* Function to GET data from web API GeoNames */
+  const maxRows = 1;
+  const baseURL = 'http://api.geonames.org/searchJSON?q=';
+  const rows = `&maxRows=${maxRows}`
+  const user = '&username=kalquiza';
   
-  const getWeather = async (baseURL, zip, key) => {
-    const res = await fetch(baseURL + zip + units + key);
+  const getDestination = async (baseURL, city, rows, user) => {
+    const res = await fetch(baseURL + city + rows + user);
     try {
       const data = await res.json();
       return data;
@@ -35,30 +36,42 @@ const postData = async (url = '', data = {}) => {
     }
   };
   
+/* Function to GET data from web API Weatherbit*/
+
+/* Function to GET data from web API Pixabay*/
+
   /* Add event listener to generate new entry */
   document.getElementById('generate').addEventListener('click', performAction);
   
   // eslint-disable-next-line require-jsdoc
   function performAction(e) {
-    const zip = document.getElementById('zip').value;
-    getWeather(baseURL, zip, apiKey)
+    const city = document.getElementById('city').value;
+    // TODO: Get departure date from form field
+    getDestination(baseURL, city, rows, user)
         .then((data) => {
-          /* Build weather journal entry */
+          /* Build travel planner entry */
   
           // Get the current date
           // Create a new date instance dynamically with JS
           const d = new Date();
           const newDate = d.getMonth()+'.'+ d.getDate()+'.'+ d.getFullYear();
   
-          // Get the temperature
-          const currentTemp = data.main.temp;
+          // TODO: Determine days away countdown
+
+          console.log(data);
+          console.log(data.geonames[0].name);
+          console.log(data.geonames[0].countryName);
+
+          // TODO: Determine typical weather for departure day
+          //const currentTemp = data.main.temp;
   
           // Get the user input
-          const feelings = document.getElementById('feelings').value;
+          //const feelings = document.getElementById('feelings').value;
   
           // Post data to app
           postData('http://localhost:8081/', {
-            temperature: currentTemp,
+            // TODO: Format application data
+            temperature: null,
             date: newDate,
             feelings: feelings,
           }).then(

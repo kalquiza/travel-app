@@ -1,6 +1,6 @@
 // import { checkForName } from './js/nameChecker'
 import { postData } from './js/application'
-import { getWeather } from './js/application'
+import { getDestination } from './js/application'
 import { performAction } from './js/application'
 import { updateUI } from './js/application'
 
@@ -9,7 +9,7 @@ import './styles/styles.scss'
 
 export {
     postData,
-    getWeather,
+    getDestination,
     performAction,
     updateUI
 }
