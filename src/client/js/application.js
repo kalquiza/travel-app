@@ -3,6 +3,7 @@ const postData = async (url = '', data = {}) => {
     console.log(data);
     const response = await fetch(url, {
       method: 'POST', // *GET, POST, PUT, DELETE, etc.
+      mode: 'cors',
       credentials: 'same-origin', // include, *same-origin, omit
       headers: {
         'Content-Type': 'application/json',
@@ -56,7 +57,7 @@ const postData = async (url = '', data = {}) => {
           const feelings = document.getElementById('feelings').value;
   
           // Post data to app
-          postData('/', {
+          postData('http://localhost:8081/', {
             temperature: currentTemp,
             date: newDate,
             feelings: feelings,
@@ -71,7 +72,7 @@ const postData = async (url = '', data = {}) => {
   }
   
   const updateUI = async () => {
-    const request = await fetch('/all');
+    const request = await fetch('http://localhost:8081/all');
     try {
       const allData = await request.json();
       document.getElementById('date').innerHTML = allData[Object.keys(allData).length - 1].date;

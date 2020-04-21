@@ -32,3 +32,26 @@ app.listen(8081, function () {
 app.get('/test', function (req, res) {
     res.send(mockAPIResponse)
 })
+
+// GET Route
+app.get('/all', (req, res) => {
+    res.send(projectData);
+  });
+  
+// Setup empty JS object to act as endpoint for all routes
+projectData = {};
+let entries = 0;
+
+// POST Route
+app.post('/', (req, res) => {
+newEntry = {
+    temperature: req.body.temperature,
+    date: req.body.date,
+    feelings: req.body.feelings,
+};
+
+projectData[entries] = newEntry;
+entries++;
+console.log(projectData);
+},
+);

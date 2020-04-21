@@ -1,12 +1,15 @@
 // import { checkForName } from './js/nameChecker'
-// import { handleSubmit } from './js/formHandler'
+import { postData } from './js/application'
+import { getWeather } from './js/application'
+import { performAction } from './js/application'
+import { updateUI } from './js/application'
 
 import './styles/resets.scss'
 import './styles/styles.scss'
 
-/*
 export {
-    checkForName,
-    handleSubmit
+    postData,
+    getWeather,
+    performAction,
+    updateUI
 }
-*/
