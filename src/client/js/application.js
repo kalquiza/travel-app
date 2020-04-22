@@ -22,12 +22,12 @@ const postData = async (url = '', data = {}) => {
   
   /* Function to GET data from web API GeoNames */
   const maxRows = 1;
-  const baseURL = 'http://api.geonames.org/searchJSON?q=';
+  const GeoNamesBaseURL = 'http://api.geonames.org/searchJSON?q=';
   const rows = `&maxRows=${maxRows}`
   const user = '&username=kalquiza';
   
-  const getDestination = async (baseURL, city, rows, user) => {
-    const res = await fetch(baseURL + city + rows + user);
+  const getDestination = async (GeoNamesBaseURL, city, rows, user) => {
+    const res = await fetch(GeoNamesBaseURL + city + rows + user);
     try {
       const data = await res.json();
       return data;
@@ -37,6 +37,18 @@ const postData = async (url = '', data = {}) => {
   };
   
 /* Function to GET data from web API Weatherbit*/
+const weatherBitBaseURL = 'https://api.weatherbit.io/v2.0/normals?';
+const apiKey = '7a6d0799b5e440c58fcfa254e7630cc8';
+
+const getClimateNormals = async (weatherBitBaseURL, lat, lon, start, end, apiKey) => {
+  const res = await fetch(`${weatherBitBaseURL}lat=${lat}&lon=${lon}&start_day=${start}&end_day=${end}&units=i&tp=daily&key=${apiKey}`);
+  try {
+    const data = await res.json();
+    return data;
+  } catch (error) {
+    console.log('error', error);
+  }
+};
 
 /* Function to GET data from web API Pixabay*/
 
@@ -49,32 +61,38 @@ const postData = async (url = '', data = {}) => {
     const departureDate = document.getElementById('departure-date').valueAsDate;
 
     // TODO: Get departure date from form field
-    getDestination(baseURL, city, rows, user)
+    getDestination(GeoNamesBaseURL, city, rows, user)
         .then((data) => {
           /* Build travel planner entry */
-  
-          // Determine days away countdown
+          
+          // Geonames destination data
+          console.log(data);
 
-          // Get the current date
-          // Create a new date instance dynamically with JS
-          const currentDate = new Date();
-  
+          // Determine days away countdown
           const _second = 1000;
           const _minute = _second * 60;
           const _hour = _minute * 60;
           const _day = _hour * 24;
-   
-          console.log(`Current Date: ${currentDate}`);
-          console.log(`Departure Date: ${departureDate}`);
+
+          // Get the current date
+          const currentDate = new Date();
 
           const countdown = departureDate - currentDate;
           const days = Math.floor(countdown / _day) + 1;
 
-          console.log(`Countdown: ${days} Days`);
+          console.log(`Current Date: ${currentDate}`);
+          console.log(`Departure Date: ${departureDate}`);
+          console.log(`Countdown: ${days} Days until ${data.geonames[0].name}, ${data.geonames[0].countryName}`);
 
-          console.log(data);
-          console.log(data.geonames[0].name);
-          console.log(data.geonames[0].countryName);
+          // Determine weatherbit api request parameters
+
+          // start_day, end_day
+          const endDate = new Date(departureDate);
+          endDate.setDate(endDate.getDate() + 1);
+          const startDay = (departureDate.getUTCMonth()+1) + '-' + departureDate.getUTCDate();
+          const endDay = (endDate.getUTCMonth()+1) + '-' + endDate.getUTCDate();
+
+          console.log(`${weatherBitBaseURL}lat=${data.geonames[0].lat}&lon=${data.geonames[0].lng}&start_day=${startDay}&end_day=${endDay}&units=i&tp=daily&key=${apiKey}`)
 
           // TODO: Determine typical weather for departure day
           //const currentTemp = data.main.temp;
