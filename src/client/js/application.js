@@ -46,17 +46,31 @@ const postData = async (url = '', data = {}) => {
   // eslint-disable-next-line require-jsdoc
   function performAction(e) {
     const city = document.getElementById('city').value;
+    const departureDate = document.getElementById('departure-date').valueAsDate;
+
     // TODO: Get departure date from form field
     getDestination(baseURL, city, rows, user)
         .then((data) => {
           /* Build travel planner entry */
   
+          // Determine days away countdown
+
           // Get the current date
           // Create a new date instance dynamically with JS
-          const d = new Date();
-          const newDate = d.getMonth()+'.'+ d.getDate()+'.'+ d.getFullYear();
+          const currentDate = new Date();
   
-          // TODO: Determine days away countdown
+          const _second = 1000;
+          const _minute = _second * 60;
+          const _hour = _minute * 60;
+          const _day = _hour * 24;
+   
+          console.log(`Current Date: ${currentDate}`);
+          console.log(`Departure Date: ${departureDate}`);
+
+          const countdown = departureDate - currentDate;
+          const days = Math.floor(countdown / _day) + 1;
+
+          console.log(`Countdown: ${days} Days`);
 
           console.log(data);
           console.log(data.geonames[0].name);
@@ -72,7 +86,7 @@ const postData = async (url = '', data = {}) => {
           postData('http://localhost:8081/', {
             // TODO: Format application data
             temperature: null,
-            date: newDate,
+            date: countdown,
             feelings: feelings,
           }).then(
               updateUI(),
