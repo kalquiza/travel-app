@@ -92,7 +92,24 @@ const getClimateNormals = async (weatherBitBaseURL, lat, lon, start, end, apiKey
           const startDay = (departureDate.getUTCMonth()+1) + '-' + departureDate.getUTCDate();
           const endDay = (endDate.getUTCMonth()+1) + '-' + endDate.getUTCDate();
 
-          console.log(`${weatherBitBaseURL}lat=${data.geonames[0].lat}&lon=${data.geonames[0].lng}&start_day=${startDay}&end_day=${endDay}&units=i&tp=daily&key=${apiKey}`)
+          console.log(`${weatherBitBaseURL}lat=${data.geonames[0].lat}&lon=${data.geonames[0].lng}&start_day=${startDay}&end_day=${endDay}&units=i&tp=daily&key=${apiKey}`);
+
+          getClimateNormals(weatherBitBaseURL,data.geonames[0].lat, data.geonames[0].lng, startDay, endDay, apiKey)
+            .then((data) => {
+              console.log(data);
+              postData('http://localhost:8081/', {
+                // TODO: Format application data
+                temperature: null,
+                date: countdown,
+                feelings: feelings,
+              }).then(
+                updateUI(),
+                (error) => {
+                  console.log('error', error); // postData
+                });
+            }, (error) => {
+              console.log('error', error); // getClimateNormals
+            });
 
           // TODO: Determine typical weather for departure day
           //const currentTemp = data.main.temp;
@@ -101,16 +118,8 @@ const getClimateNormals = async (weatherBitBaseURL, lat, lon, start, end, apiKey
           //const feelings = document.getElementById('feelings').value;
   
           // Post data to app
-          postData('http://localhost:8081/', {
-            // TODO: Format application data
-            temperature: null,
-            date: countdown,
-            feelings: feelings,
-          }).then(
-              updateUI(),
-              (error) => {
-                console.log('error', error);
-              });
+ 
+
         }, (error) => {
           console.log('error', error);
         });
