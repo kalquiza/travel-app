@@ -38,10 +38,10 @@ const postData = async (url = '', data = {}) => {
   
 /* Function to GET data from web API Weatherbit*/
 const weatherBitBaseURL = 'https://api.weatherbit.io/v2.0/normals?';
-const apiKey = '7a6d0799b5e440c58fcfa254e7630cc8';
+const weatherBitApiKey = '7a6d0799b5e440c58fcfa254e7630cc8';
 
-const getClimateNormals = async (weatherBitBaseURL, lat, lon, start, end, apiKey) => {
-  const res = await fetch(`${weatherBitBaseURL}lat=${lat}&lon=${lon}&start_day=${start}&end_day=${end}&units=i&tp=daily&key=${apiKey}`);
+const getClimateNormals = async (weatherBitBaseURL, lat, lon, start, end, weatherBitApiKey) => {
+  const res = await fetch(`${weatherBitBaseURL}lat=${lat}&lon=${lon}&start_day=${start}&end_day=${end}&units=i&tp=daily&key=${weatherBitApiKey}`);
   try {
     const data = await res.json();
     return data;
@@ -51,6 +51,18 @@ const getClimateNormals = async (weatherBitBaseURL, lat, lon, start, end, apiKey
 };
 
 /* Function to GET data from web API Pixabay*/
+const pixabayBaseURL = 'https://pixabay.com/api/';
+const pixabayApiKey = '16127186-7e85907c44b053167dd566e1d';
+
+const getDestinationImage = async (pixabayBaseURL, pixabayApiKey, destination) => {
+  const res = await fetch(`${pixabayBaseURL}?key=${pixabayApiKey}&q=${destination}&image_type=photo&pretty=true&order=popular&safesearch=true`);
+  try {
+    const data = await res.json();
+    return data;
+  } catch (error) {
+    console.log('error', error);
+  }
+};
 
   /* Add event listener to generate new entry */
   document.getElementById('generate').addEventListener('click', performAction);
@@ -65,6 +77,9 @@ const getClimateNormals = async (weatherBitBaseURL, lat, lon, start, end, apiKey
         .then((data) => {
           /* Build travel planner entry */
           
+          const city = data.geonames[0].name;
+          const country = data.geonames[0].countryName;
+
           // Geonames destination data
           console.log(data);
 
@@ -82,7 +97,7 @@ const getClimateNormals = async (weatherBitBaseURL, lat, lon, start, end, apiKey
 
           console.log(`Current Date: ${currentDate}`);
           console.log(`Departure Date: ${departureDate}`);
-          console.log(`Countdown: ${days} Days until ${data.geonames[0].name}, ${data.geonames[0].countryName}`);
+          console.log(`Countdown: ${days} Days until ${city}, ${country}`);
 
           // Determine weatherbit api request parameters
 
@@ -92,21 +107,31 @@ const getClimateNormals = async (weatherBitBaseURL, lat, lon, start, end, apiKey
           const startDay = (departureDate.getUTCMonth()+1) + '-' + departureDate.getUTCDate();
           const endDay = (endDate.getUTCMonth()+1) + '-' + endDate.getUTCDate();
 
-          console.log(`${weatherBitBaseURL}lat=${data.geonames[0].lat}&lon=${data.geonames[0].lng}&start_day=${startDay}&end_day=${endDay}&units=i&tp=daily&key=${apiKey}`);
+          console.log(`${weatherBitBaseURL}lat=${data.geonames[0].lat}&lon=${data.geonames[0].lng}&start_day=${startDay}&end_day=${endDay}&units=i&tp=daily&key=${weatherBitApiKey}`);
 
-          getClimateNormals(weatherBitBaseURL,data.geonames[0].lat, data.geonames[0].lng, startDay, endDay, apiKey)
+          getClimateNormals(weatherBitBaseURL,data.geonames[0].lat, data.geonames[0].lng, startDay, endDay, weatherBitApiKey)
             .then((data) => {
               console.log(data);
-              postData('http://localhost:8081/', {
-                // TODO: Format application data
-                temperature: null,
-                date: countdown,
-                feelings: feelings,
-              }).then(
-                updateUI(),
-                (error) => {
-                  console.log('error', error); // postData
-                });
+
+              getDestinationImage(pixabayBaseURL, pixabayApiKey, city)
+              .then((data) => {
+                console.log(data);
+
+                postData('http://localhost:8081/', {
+                  // TODO: Format application data
+                  temperature: null,
+                  date: countdown,
+                  feelings: feelings,
+                }).then(
+                  updateUI(),
+                  (error) => {
+                    console.log('error', error); // postData
+                  });
+                
+              }, (error) => {
+                console.log('error', error); // getDestinationImage
+              });
+
             }, (error) => {
               console.log('error', error); // getClimateNormals
             });
