@@ -70,7 +70,7 @@ const getDestinationImage = async (pixabayBaseURL, pixabayApiKey, destination) =
   // eslint-disable-next-line require-jsdoc
   function performAction(e) {
     const city = document.getElementById('city').value;
-    const departureDate = document.getElementById('departure-date').valueAsDate;
+    const departureDateUTC = document.getElementById('departure-date').valueAsDate;
 
     // TODO: Get departure date from form field
     getDestination(GeoNamesBaseURL, city, rows, user)
@@ -92,8 +92,18 @@ const getDestinationImage = async (pixabayBaseURL, pixabayApiKey, destination) =
           // Get the current date
           const currentDate = new Date();
 
+
+          // convert from utc to local
+          const departureDate = new Date(departureDateUTC.getUTCFullYear(), departureDateUTC.getUTCMonth(), departureDateUTC.getUTCDate());
+
+          // match time for countdown
+          departureDate.setHours(currentDate.getHours());
+          departureDate.setMinutes(currentDate.getMinutes());
+          departureDate.setSeconds(currentDate.getSeconds());
+          departureDate.setMilliseconds(currentDate.getMilliseconds());
+
           const countdown = departureDate - currentDate;
-          const countdownDays = Math.floor(countdown / _day) + 1;
+          const countdownDays = Math.floor(countdown / _day);
 
           console.log(`Current Date: ${currentDate}`);
           console.log(`Departure Date: ${departureDate}`);
@@ -104,9 +114,9 @@ const getDestinationImage = async (pixabayBaseURL, pixabayApiKey, destination) =
           // start_day, end_day
           const endDate = new Date(departureDate);
           endDate.setDate(endDate.getDate() + 1);
-          const startDay = (departureDate.getUTCMonth()+1) + '-' + departureDate.getUTCDate();
-          const endDay = (endDate.getUTCMonth()+1) + '-' + endDate.getUTCDate();
-          const depDate = (departureDate.getUTCMonth()+1) + '/' + departureDate.getUTCDate() + '/' + departureDate.getUTCFullYear();
+          const startDay = (departureDate.getMonth()+1) + '-' + departureDate.getDate();
+          const endDay = (endDate.getMonth()+1) + '-' + endDate.getDate();
+          const depDate = (departureDate.getMonth()+1) + '/' + departureDate.getDate() + '/' + departureDate.getFullYear();
 
           console.log(`${weatherBitBaseURL}lat=${data.geonames[0].lat}&lon=${data.geonames[0].lng}&start_day=${startDay}&end_day=${endDay}&units=i&tp=daily&key=${weatherBitApiKey}`);
 
@@ -116,8 +126,10 @@ const getDestinationImage = async (pixabayBaseURL, pixabayApiKey, destination) =
               const avgTemp = data.data[0].temp;
               const minTemp = data.data[0].min_temp;
               const maxTemp = data.data[0].max_temp;
+
+              const cityFormatted = city.replace(' ', '+');
               
-              getDestinationImage(pixabayBaseURL, pixabayApiKey, city)
+              getDestinationImage(pixabayBaseURL, pixabayApiKey, cityFormatted)
               .then((data) => {
                 console.log(data);
                 const imageUrl = data.hits[0].webformatURL;
