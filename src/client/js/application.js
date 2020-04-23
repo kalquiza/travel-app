@@ -93,11 +93,11 @@ const getDestinationImage = async (pixabayBaseURL, pixabayApiKey, destination) =
           const currentDate = new Date();
 
           const countdown = departureDate - currentDate;
-          const days = Math.floor(countdown / _day) + 1;
+          const countdownDays = Math.floor(countdown / _day) + 1;
 
           console.log(`Current Date: ${currentDate}`);
           console.log(`Departure Date: ${departureDate}`);
-          console.log(`Countdown: ${days} Days until ${city}, ${country}`);
+          console.log(`Countdown: ${countdownDays} Days until ${city}, ${country}`);
 
           // Determine weatherbit api request parameters
 
@@ -106,22 +106,31 @@ const getDestinationImage = async (pixabayBaseURL, pixabayApiKey, destination) =
           endDate.setDate(endDate.getDate() + 1);
           const startDay = (departureDate.getUTCMonth()+1) + '-' + departureDate.getUTCDate();
           const endDay = (endDate.getUTCMonth()+1) + '-' + endDate.getUTCDate();
+          const depDate = (departureDate.getUTCMonth()+1) + '/' + departureDate.getUTCDate() + '/' + departureDate.getUTCFullYear();
 
           console.log(`${weatherBitBaseURL}lat=${data.geonames[0].lat}&lon=${data.geonames[0].lng}&start_day=${startDay}&end_day=${endDay}&units=i&tp=daily&key=${weatherBitApiKey}`);
 
           getClimateNormals(weatherBitBaseURL,data.geonames[0].lat, data.geonames[0].lng, startDay, endDay, weatherBitApiKey)
             .then((data) => {
               console.log(data);
-
+              const avgTemp = data.data[0].temp;
+              const minTemp = data.data[0].min_temp;
+              const maxTemp = data.data[0].max_temp;
+              
               getDestinationImage(pixabayBaseURL, pixabayApiKey, city)
               .then((data) => {
                 console.log(data);
+                const imageUrl = data.hits[0].webformatURL;
 
                 postData('http://localhost:8081/', {
-                  // TODO: Format application data
-                  temperature: null,
-                  date: countdown,
-                  feelings: feelings,
+                  city: city,
+                  country: country,
+                  date: depDate,
+                  countdown: countdownDays,
+                  avgTemp: avgTemp,
+                  minTemp: minTemp,
+                  maxTemp: maxTemp,
+                  imageUrl: imageUrl
                 }).then(
                   updateUI(),
                   (error) => {

@@ -44,10 +44,15 @@ let entries = 0;
 
 // POST Route
 app.post('/', (req, res) => {
-newEntry = {
-    temperature: req.body.temperature,
-    date: req.body.date,
-    feelings: req.body.feelings,
+newEntry = {                  city: city,
+    country: req.body.country,
+    date: req.body.depDate,
+    countdown: req.body.countdown,
+    avgTemp: req.body.avgTemp,
+    minTemp: req.body.minTemp,
+    maxTemp: req.body.maxTemp,
+    imageUrl: req.body.imageUrl
+
 };
 
 projectData[entries] = newEntry;
