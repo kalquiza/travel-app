@@ -69,7 +69,7 @@ const getDestinationImage = async (pixabayBaseURL, pixabayApiKey, destination) =
   
   // eslint-disable-next-line require-jsdoc
   function performAction(e) {
-    const city = document.getElementById('city').value;
+    const city = document.getElementById('destination').value;
     const departureDateUTC = document.getElementById('departure-date').valueAsDate;
 
     // TODO: Get departure date from form field
@@ -175,9 +175,15 @@ const getDestinationImage = async (pixabayBaseURL, pixabayApiKey, destination) =
     const request = await fetch('http://localhost:8081/all');
     try {
       const allData = await request.json();
-      document.getElementById('date').innerHTML = allData[Object.keys(allData).length - 1].date;
-      document.getElementById('temp').innerHTML = allData[Object.keys(allData).length - 1].temperature;
-      document.getElementById('content').innerHTML = allData[Object.keys(allData).length - 1].feelings;
+      document.getElementById('city').innerHTML = allData[Object.keys(allData).length - 1].city;
+      document.getElementById('country').innerHTML = allData[Object.keys(allData).length - 1].country;
+      document.getElementById('departureDate').innerHTML = allData[Object.keys(allData).length - 1].date;
+      document.getElementById('countdownDays').innerHTML = allData[Object.keys(allData).length - 1].countdown;
+      document.getElementById('avgTemp').innerHTML = allData[Object.keys(allData).length - 1].avgTemp;
+      document.getElementById('minTemp').innerHTML = allData[Object.keys(allData).length - 1].minTemp;
+      document.getElementById('maxTemp').innerHTML = allData[Object.keys(allData).length - 1].maxTemp;
+      document.getElementById('imageUrl').innerHTML = allData[Object.keys(allData).length - 1].imageUrl;
+
     } catch (error) {
       console.log('error', error);
     }
