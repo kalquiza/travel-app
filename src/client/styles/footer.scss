@@ -1,0 +1,19 @@
+.footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    display: grid;
+    grid-template-columns: 100vw;
+    grid-template-rows: 75px 75px;
+    justify-content: center;
+    background:#bcd;
+    color: #fff;
+    grid-template-areas:
+    "sc";
+}
+
+.copy {
+    justify-self: center;
+    margin: 25px;
+    font-weight: 200;
+}

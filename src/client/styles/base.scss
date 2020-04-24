@@ -1,0 +1,42 @@
+.content{
+  display: grid;
+  justify-content: center;
+  grid-template-columns: 350px;
+  grid-row-gap: 30px;
+  grid-column-gap: 30px;
+  padding: 50px 13px;
+  background-color: rgb(255, 255, 255);
+  grid-template-areas:
+  "ft";
+}
+
+@media (min-width: 800px) and (max-width:1100px) {
+  .content{
+    grid-template-columns: 375px 375px;
+    grid-template-areas:
+    "ft ft";
+  }
+}
+
+@media (min-width:1100px) {
+  .content{
+    grid-template-columns: 512px 512px;
+    grid-template-areas:
+    "ft ft";
+  }
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+.entry {
+  #countdown {
+    padding-bottom: 7px;
+  }
+
+  div {
+    padding-bottom: 7px;
+  }
+}

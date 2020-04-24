@@ -1,0 +1,70 @@
+
+  #form {
+    font-family: 'Roboto', sans-serif;
+    font-weight: 100;
+    font-size: 1em;
+    display: grid;
+    align-content: start;
+    justify-content: center;
+    grid-template-columns: 3500x;
+    grid-row-gap: 10px;
+    background-color: rgb(255, 255, 255);
+    width: fit-content;
+    grid-template-areas:
+    "des"
+    "dep"
+    "btn"
+    "wea";
+
+    #destination {
+      display: flex;
+      flex-direction: row;
+      align-items: baseline;
+      grid-area: des
+    }
+  
+    #departure {
+      display: flex;
+      flex-direction: row;
+      align-items: baseline;
+      grid-area: dep
+    }
+  
+    #button-row {
+      display: flex;
+      flex-direction: row;
+      justify-content: flex-start;
+      grid-area: btn
+    }
+  
+    #weather {
+      display: flex;
+      flex-direction: row;
+      grid-area: wea
+    }
+
+    label {
+      margin: 0px 7px 0px 0px;
+    }
+
+    input {
+      border: none;
+      font-family: 'Roboto', sans-serif;
+
+      &:focus {
+        outline: none;
+      }
+    }
+
+    button {
+      font-family: 'Roboto', sans-serif;
+      display: inline-block;
+      border: none;
+      text-align: center;
+      text-decoration: none;
+      color: white;
+      background-color: #BCD;
+      padding: 13px;
+      margin: 0px 13px 0px 0px;
+    }
+  }

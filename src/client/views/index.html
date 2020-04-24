@@ -3,53 +3,71 @@
 
 <head>
   <meta charset="UTF-8">
-  <title>Weather Journal</title>
-  <link href="https://fonts.googleapis.com/css?family=Oswald:400,600,700|Ranga:400,700&display=swap" rel="stylesheet">
+  <title>Travel Planner Application</title>
+  <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   <link rel="stylesheet" href="/styles/resets.css">
-  <link rel="stylesheet" href="/styles/styles.css">
+  <link rel="stylesheet" href="/styles/base.css">
+  <link rel="stylesheet" href="/styles/header.css">
+  <link rel="stylesheet" href="/styles/form.css">
+  <link rel="stylesheet" href="/styles/footer.css">
 </head>
 
 <body>
-  <div id="app">
-    <div class="holder headline">
-      Weather Journal App
-    </div>
-    <div class="holder zip">
-      <label for="destination">Enter city here</label>
-      <input type="text" id="city" placeholder="enter city here">
 
-      <label for="start">Departure date:</label>
-      <input type="date" id="departure-date" name="trip-start" value="" min="2020-01-01" max="2100-01-01">
+  <div class="header">
+    <div class="blog-title">Travel Planner</div>
+  </div>
+  </div>
 
-    </div>
-    <div class="holder feel">
-      <label for="feelings">How are you feeling today?</label>
-      <textarea class="myInput" id="feelings" placeholder="Enter your feelings here" rows="9" cols="50"></textarea>
-      <button id="generate" type="submit"> Generate </button>
-    </div>
-    <div class="holder entry">
-      <div class="title">Most Recent Entry</div>
-      <div id="entryHolder">
-        <div id="city"></div>
-        <div id="country"></div>
-        <div id="departureDate"></div>
-        <div id="countdownDays"></div>
-        <div id="avgTemp"></div>
-        <div id="minTemp"></div>
-        <div id="maxTemp"></div>
-        <div id="imageUrl"></div>
+  <div class="container">
+    <div class="content">
+      <img id="destination-img" src="/media/default.jpg">
+      <div id="form">
+        <div id="destination">
+          <label id="destination-label" for="destination">My trip to:</label>
+          <input id="destination-input" type="text" id="destination" placeholder="Enter Location">
+        </div>
+
+
+        <div id="departure">
+          <label for="departure-label">Departing:</label>
+          <input type="date" id="departure-input" name="trip-start" value="" min="2020-01-01" max="2100-01-01">
+        </div>
+
+        <div id="button-row">
+          <button id="generate" type="submit">Save Trip</button>
+          <button id="generate">Remove Trip</button>
+        </div>
+
+        <div id="weather">
+          <div class="holder entry">
+            <div id="entryHolder">
+              <div id="countdown"></div>
+              <div id="departureDate"></div>
+              <div id="countdownDays"></div>
+              <div id="weather-title"></div>
+              <div id="avgTemp"></div>
+              <div id="hiLoTemp"></div>
+            </div>
+          </div>
+        </div>
+
       </div>
     </div>
-  </div>
-  <script>
-    // Check that service workers are supported
-    if ('serviceWorker' in navigator) {
-      // Use the window load event to keep the page load performant
-      window.addEventListener('load', () => {
-        navigator.serviceWorker.register('/service-worker.js');
-      });
-    }
-  </script>
+
+    <div class="footer">
+    </div>
+    <script>
+      // Check that service workers are supported
+      if ('serviceWorker' in navigator) {
+        // Use the window load event to keep the page load performant
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('/service-worker.js');
+        });
+      }
+    </script>
 </body>
 
 </html>
