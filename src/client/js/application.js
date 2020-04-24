@@ -132,7 +132,7 @@ const getDestinationImage = async (pixabayBaseURL, pixabayApiKey, destination) =
               getDestinationImage(pixabayBaseURL, pixabayApiKey, cityFormatted)
               .then((data) => {
                 console.log(data);
-                let imageUrl = "/media/default.jpg";
+                let imageUrl = "https://pixabay.com/get/5ee4d4474e53b10ff3d8992cc62e367c123ed6e34e507441722879d4934ec6_640.jpg";
                 if (parseInt(data.total) > 0) {
                   imageUrl = data.hits[0].webformatURL;
                 }
@@ -180,8 +180,8 @@ const getDestinationImage = async (pixabayBaseURL, pixabayApiKey, destination) =
       const key = Object.keys(allData).length-1;
       document.getElementById('countdown').innerHTML = `${allData[key].city}, ${allData[key].country} is ${allData[key].countdown} days away`;
       document.getElementById('weather-title').innerHTML = `Typical weather for then is:`;
-      document.getElementById('avgTemp').innerHTML = `Average - ${allData[key].avgTemp}`;
-      document.getElementById('hiLoTemp').innerHTML = `High - ${allData[key].maxTemp}, Low - ${allData[key].minTemp}`;
+      document.getElementById('avgTemp').innerHTML = `Average: ${allData[key].avgTemp}&deg F`;
+      document.getElementById('hiLoTemp').innerHTML = `High: ${allData[key].maxTemp}&deg, Low: ${allData[key].minTemp}&deg`;
       document.getElementById('destination-img').src = allData[key].imageUrl;
 
     } catch (error) {

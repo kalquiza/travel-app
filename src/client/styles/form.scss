@@ -10,6 +10,7 @@
     grid-row-gap: 10px;
     background-color: rgb(255, 255, 255);
     width: fit-content;
+    padding-top: 13px;
     grid-template-areas:
     "des"
     "dep"
@@ -50,6 +51,7 @@
     input {
       border: none;
       font-family: 'Roboto', sans-serif;
+      font-size: 100%;
 
       &:focus {
         outline: none;
