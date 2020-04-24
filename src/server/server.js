@@ -1,3 +1,7 @@
+// Setup empty JS object to act as endpoint for all routes
+projectData = {};
+let entries = 0;
+
 const path = require('path')
 const express = require('express')
 const mockAPIResponse = require('./mockAPI.js')
@@ -37,10 +41,6 @@ app.get('/test', function (req, res) {
 app.get('/all', (req, res) => {
     res.send(projectData);
   });
-  
-// Setup empty JS object to act as endpoint for all routes
-projectData = {};
-let entries = 0;
 
 // POST Route
 app.post('/', (req, res) => {
@@ -58,5 +58,6 @@ newEntry = {
 projectData[entries] = newEntry;
 entries++;
 console.log(projectData);
+res.status(200).send('success');
 },
 );

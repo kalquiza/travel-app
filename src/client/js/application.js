@@ -69,11 +69,11 @@ const getDestinationImage = async (pixabayBaseURL, pixabayApiKey, destination) =
   
   // eslint-disable-next-line require-jsdoc
   function performAction(e) {
-    const city = document.getElementById('destination').value;
-    const departureDateUTC = document.getElementById('departure-date').valueAsDate;
+    const destination = document.getElementById('destination-input').value;
+    const departureDateUTC = document.getElementById('departure-input').valueAsDate;
 
     // TODO: Get departure date from form field
-    getDestination(GeoNamesBaseURL, city, rows, user)
+    getDestination(GeoNamesBaseURL, destination, rows, user)
         .then((data) => {
           /* Build travel planner entry */
           
@@ -116,7 +116,7 @@ const getDestinationImage = async (pixabayBaseURL, pixabayApiKey, destination) =
           endDate.setDate(endDate.getDate() + 1);
           const startDay = (departureDate.getMonth()+1) + '-' + departureDate.getDate();
           const endDay = (endDate.getMonth()+1) + '-' + endDate.getDate();
-          const depDate = (departureDate.getMonth()+1) + '/' + departureDate.getDate() + '/' + departureDate.getFullYear();
+          const depDate = departureDate.getFullYear() + '-' + (departureDate.getMonth()+1) + '-' + departureDate.getDate();
 
           console.log(`${weatherBitBaseURL}lat=${data.geonames[0].lat}&lon=${data.geonames[0].lng}&start_day=${startDay}&end_day=${endDay}&units=i&tp=daily&key=${weatherBitApiKey}`);
 
@@ -132,8 +132,10 @@ const getDestinationImage = async (pixabayBaseURL, pixabayApiKey, destination) =
               getDestinationImage(pixabayBaseURL, pixabayApiKey, cityFormatted)
               .then((data) => {
                 console.log(data);
-                const imageUrl = data.hits[0].webformatURL;
-
+                let imageUrl = "/media/default.jpg";
+                if (parseInt(data.total) > 0) {
+                  imageUrl = data.hits[0].webformatURL;
+                }
                 postData('http://localhost:8081/', {
                   city: city,
                   country: country,
@@ -143,12 +145,11 @@ const getDestinationImage = async (pixabayBaseURL, pixabayApiKey, destination) =
                   minTemp: minTemp,
                   maxTemp: maxTemp,
                   imageUrl: imageUrl
-                }).then(
-                  updateUI(),
-                  (error) => {
+                }).then((data) => {
+                  updateUI();
+                }, (error) => {
                     console.log('error', error); // postData
                   });
-                
               }, (error) => {
                 console.log('error', error); // getDestinationImage
               });
@@ -175,14 +176,13 @@ const getDestinationImage = async (pixabayBaseURL, pixabayApiKey, destination) =
     const request = await fetch('http://localhost:8081/all');
     try {
       const allData = await request.json();
-      document.getElementById('city').innerHTML = allData[Object.keys(allData).length - 1].city;
-      document.getElementById('country').innerHTML = allData[Object.keys(allData).length - 1].country;
-      document.getElementById('departureDate').innerHTML = allData[Object.keys(allData).length - 1].date;
-      document.getElementById('countdownDays').innerHTML = allData[Object.keys(allData).length - 1].countdown;
-      document.getElementById('avgTemp').innerHTML = allData[Object.keys(allData).length - 1].avgTemp;
-      document.getElementById('minTemp').innerHTML = allData[Object.keys(allData).length - 1].minTemp;
-      document.getElementById('maxTemp').innerHTML = allData[Object.keys(allData).length - 1].maxTemp;
-      document.getElementById('imageUrl').innerHTML = allData[Object.keys(allData).length - 1].imageUrl;
+      console.log(allData);
+      const key = Object.keys(allData).length-1;
+      document.getElementById('countdown').innerHTML = `${allData[key].city}, ${allData[key].country} is ${allData[key].countdown} days away`;
+      document.getElementById('weather-title').innerHTML = `Typical weather for then is:`;
+      document.getElementById('avgTemp').innerHTML = `Average - ${allData[key].avgTemp}`;
+      document.getElementById('hiLoTemp').innerHTML = `High - ${allData[key].maxTemp}, Low - ${allData[key].minTemp}`;
+      document.getElementById('destination-img').src = allData[key].imageUrl;
 
     } catch (error) {
       console.log('error', error);
