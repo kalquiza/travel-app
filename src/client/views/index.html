@@ -30,10 +30,14 @@
           <input id="destination-input" type="text" id="destination" placeholder="Enter Location">
         </div>
 
-
         <div id="departure">
           <label for="departure-label">Departing:</label>
           <input type="date" id="departure-input" name="trip-start" value="" min="2020-01-01" max="2100-01-01">
+        </div>
+
+        <div id="return">
+          <label for="return-label">Returning:</label>
+          <input type="date" id="return-input" name="trip-start" value="" min="2020-01-01" max="2100-01-01">
         </div>
 
         <div id="button-row">
@@ -44,8 +48,7 @@
           <div class="holder entry">
             <div id="entryHolder">
               <div id="countdown"></div>
-              <div id="departureDate"></div>
-              <div id="countdownDays"></div>
+              <div id="tripLength"></div>
               <div id="weather-title"></div>
               <div id="avgTemp"></div>
               <div id="hiLoTemp"></div>

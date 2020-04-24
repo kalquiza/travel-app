@@ -47,8 +47,10 @@ app.post('/', (req, res) => {
 newEntry = {                  
     city: req.body.city,
     country: req.body.country,
-    date: req.body.date,
+    depart: req.body.depart,
+    return: req.body.return,
     countdown: req.body.countdown,
+    tripLength: req.body.tripLength,
     avgTemp: req.body.avgTemp,
     minTemp: req.body.minTemp,
     maxTemp: req.body.maxTemp,

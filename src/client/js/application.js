@@ -71,6 +71,7 @@ const getDestinationImage = async (pixabayBaseURL, pixabayApiKey, destination) =
   function performAction(e) {
     const destination = document.getElementById('destination-input').value;
     const departureDateUTC = document.getElementById('departure-input').valueAsDate;
+    const returnDateUTC = document.getElementById('return-input').valueAsDate;
 
     // TODO: Get departure date from form field
     getDestination(GeoNamesBaseURL, destination, rows, user)
@@ -95,19 +96,32 @@ const getDestinationImage = async (pixabayBaseURL, pixabayApiKey, destination) =
 
           // convert from utc to local
           const departureDate = new Date(departureDateUTC.getUTCFullYear(), departureDateUTC.getUTCMonth(), departureDateUTC.getUTCDate());
+          const returnDate = new Date(returnDateUTC.getUTCFullYear(), returnDateUTC.getUTCMonth(), returnDateUTC.getUTCDate());
+
 
           // match time for countdown
           departureDate.setHours(currentDate.getHours());
           departureDate.setMinutes(currentDate.getMinutes());
           departureDate.setSeconds(currentDate.getSeconds());
           departureDate.setMilliseconds(currentDate.getMilliseconds());
+          
+          returnDate.setHours(currentDate.getHours());
+          returnDate.setMinutes(currentDate.getMinutes());
+          returnDate.setSeconds(currentDate.getSeconds());
+          returnDate.setMilliseconds(currentDate.getMilliseconds());
+
 
           const countdown = departureDate - currentDate;
           const countdownDays = Math.floor(countdown / _day);
 
+          const tripLength = returnDate - departureDate;
+          const tripLengthDays = Math.floor(tripLength / _day);
+
           console.log(`Current Date: ${currentDate}`);
           console.log(`Departure Date: ${departureDate}`);
+          console.log(`Return Date: ${returnDate}`);
           console.log(`Countdown: ${countdownDays} Days until ${city}, ${country}`);
+          console.log(`Length of Stay: ${tripLengthDays}`);
 
           // Determine weatherbit api request parameters
 
@@ -117,6 +131,7 @@ const getDestinationImage = async (pixabayBaseURL, pixabayApiKey, destination) =
           const startDay = (departureDate.getMonth()+1) + '-' + departureDate.getDate();
           const endDay = (endDate.getMonth()+1) + '-' + endDate.getDate();
           const depDate = departureDate.getFullYear() + '-' + (departureDate.getMonth()+1) + '-' + departureDate.getDate();
+          const repDate = returnDate.getFullYear() + '-' + (returnDate.getMonth()+1) + '-' + returnDate.getDate();
 
           console.log(`${weatherBitBaseURL}lat=${data.geonames[0].lat}&lon=${data.geonames[0].lng}&start_day=${startDay}&end_day=${endDay}&units=i&tp=daily&key=${weatherBitApiKey}`);
 
@@ -139,8 +154,10 @@ const getDestinationImage = async (pixabayBaseURL, pixabayApiKey, destination) =
                 postData('http://localhost:8081/', {
                   city: city,
                   country: country,
-                  date: depDate,
+                  depart: depDate,
+                  return: repDate,
                   countdown: countdownDays,
+                  tripLength: tripLengthDays,
                   avgTemp: avgTemp,
                   minTemp: minTemp,
                   maxTemp: maxTemp,
@@ -179,9 +196,10 @@ const getDestinationImage = async (pixabayBaseURL, pixabayApiKey, destination) =
       console.log(allData);
       const key = Object.keys(allData).length-1;
       document.getElementById('countdown').innerHTML = `${allData[key].city}, ${allData[key].country} is ${allData[key].countdown} days away`;
+      document.getElementById('tripLength').innerHTML = `Length of stay: ${allData[key].tripLength} days`;
       document.getElementById('weather-title').innerHTML = `Typical weather for then is:`;
       document.getElementById('avgTemp').innerHTML = `Average: ${allData[key].avgTemp}&deg F`;
-      document.getElementById('hiLoTemp').innerHTML = `High: ${allData[key].maxTemp}&deg, Low: ${allData[key].minTemp}&deg`;
+      document.getElementById('hiLoTemp').innerHTML = `High: ${allData[key].maxTemp}&deg F, Low: ${allData[key].minTemp}&deg F`;
       document.getElementById('destination-img').src = allData[key].imageUrl;
 
     } catch (error) {
