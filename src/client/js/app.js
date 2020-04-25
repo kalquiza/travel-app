@@ -204,3 +204,8 @@ const getDestinationImage = async (pixabayBaseURL, pixabayApiKey, destination) =
   };
   
   export { performAction }
+  export { postData }
+  export { getDestination }
+  export { getClimateNormals }
+  export { getDestinationImage }
+
