@@ -74,8 +74,6 @@ function performAction(e) {
   getDestination(GeoNamesBaseURL, destination, rows, user)
       .then((data) => {
         /* Build travel planner entry */
-
-        // Geonames destination data
         const city = data.geonames[0].name;
         const country = data.geonames[0].countryName;
 
