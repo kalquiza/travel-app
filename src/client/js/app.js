@@ -63,9 +63,6 @@ const getDestinationImage = async (pixabayBaseURL, pixabayApiKey, destination) =
     console.log('error', error);
   }
 };
-
-  /* Add event listener to generate new entry */
-  document.getElementById('form').addEventListener('submit', performAction);
   
   // eslint-disable-next-line require-jsdoc
   function performAction(e) {
