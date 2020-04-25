@@ -1,5 +1,4 @@
-// import { checkForName } from './js/nameChecker'
-import { performAction } from './js/application'
+import { performAction } from './js/app'
 
 import './styles/resets.scss'
 import './styles/base.scss'
