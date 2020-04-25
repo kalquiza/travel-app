@@ -65,7 +65,7 @@ const getDestinationImage = async (pixabayBaseURL, pixabayApiKey, destination) =
 };
 
   /* Add event listener to generate new entry */
-  document.getElementById('generate').addEventListener('click', performAction);
+  document.getElementById('form').addEventListener('submit', performAction);
   
   // eslint-disable-next-line require-jsdoc
   function performAction(e) {
@@ -182,11 +182,10 @@ const getDestinationImage = async (pixabayBaseURL, pixabayApiKey, destination) =
           //const feelings = document.getElementById('feelings').value;
   
           // Post data to app
- 
-
         }, (error) => {
           console.log('error', error);
         });
+        e.preventDefault();
   }
   
   const updateUI = async () => {

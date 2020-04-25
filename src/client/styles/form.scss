@@ -64,6 +64,10 @@
       &:focus {
         outline: none;
       }
+
+      &:hover {
+        background-color: #BCD;
+      }
     }
 
     button {
@@ -76,5 +80,10 @@
       background-color: #BCD;
       padding: 13px;
       margin: 0px 13px 0px 0px;
+      border-radius: 5px;
+
+      &:hover {
+        background-color: #79B;
+      }
     }
   }
