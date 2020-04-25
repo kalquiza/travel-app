@@ -9,6 +9,3 @@ import './styles/footer.scss'
 export {
     performAction
 }
-
-  /* Add event listener to generate new entry */
-  document.getElementById('form').addEventListener('submit', performAction);

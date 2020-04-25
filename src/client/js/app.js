@@ -203,3 +203,4 @@ const getDestinationImage = async (pixabayBaseURL, pixabayApiKey, destination) =
     }
   };
   
+  export { performAction }
